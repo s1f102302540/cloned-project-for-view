@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Session</title>
+</head>
+<body>
+    <h1>Create a New Session</h1>
+    <form id="session-form" method="post">
+        {% csrf_token %}
+        <label for="name">Session Name:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Create Session</button>
+    </form>
+    <h2>Active Sessions</h2>
+    <ul id="session-list"></ul>
+
+    <script>
+        document.getElementById('session-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const response = await fetch('{% url "cardgame:create_session" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ name })
+            });
+            const result = await response.json();
+            if (result.success) {
+                alert('Session created successfully!');
+                loadSessions();
+            }
+        });
+
+        async function loadSessions() {
+            const response = await fetch('{% url "cardgame:session_list" %}');
+            const data = await response.json();
+            const list = document.getElementById('session-list');
+            list.innerHTML = '';
+            data.sessions.forEach(session => {
+                const item = document.createElement('li');
+                item.textContent = session.name;
+                list.appendChild(item);
+            });
+        }
+
+        loadSessions();
+    </script>
+</body>
+</html>

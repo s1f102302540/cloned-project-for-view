@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>デッキ作成</title>
+</head>
+<body>
+
+    <h1>新しいデッキを作成</h1>
+
+    <form action="{% url 'cardgame:create_deck' %}" method="post">
+        {% csrf_token %}
+        <div>
+            <label for="name">デッキ名：</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+
+        <div>
+            <label for="counts">枚数：</label>
+            <div>
+                {% for card in cards %}
+                    <div>
+                        <label for="card_{{ card.id }}">{{ card.name }} (最大9枚)：</label>
+                        <input type="number" id="card_{{ card.id }}" name="cards" value="0" min="0" max="9">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <button type="submit">作成</button>
+    </form>
+
+</body>
+</html>

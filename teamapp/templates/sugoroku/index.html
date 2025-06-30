@@ -1,0 +1,14 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>双六ゲーム - メイン画面</title>
+    <link rel="stylesheet" href="{% static 'teamapp/css/sugoroku/index.css' %}">
+</head>
+<body>
+    <h1>双六ゲーム</h1>
+    <a href="{% url 'create_room' %}" class="button">ルーム作成</a>
+    <a href="{% url 'join_room' %}" class="button">ルームに参加</a>
+</body>
+</html>

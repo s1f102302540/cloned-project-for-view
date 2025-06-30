@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+{% load static %}
+{% load i18n %}
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>カードゲーム</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'teamapp/css/menu.css' %}">
+</head>
+<body>
+    <!-- ナビゲーションバー -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">CardGame</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-light">ログアウト</button>
+                        </form>
+                    {% else %}
+                        <a class="btn btn-outline-light" href="{% url 'login' %}">ログイン</a>
+                    {% endif %}
+                </ul>
+            </div>
+            <button class="btn btn-outline-light ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sideMenu" aria-controls="sideMenu">
+                メニュー
+            </button>
+        </div>
+    </nav>
+
+    <!-- サイドメニュー -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="sideMenu" aria-labelledby="sideMenuLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="sideMenuLabel"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="閉じる"></button>
+        </div>
+        <div class="offcanvas-body">
+            <p> </p>
+            {% if user.is_authenticated %}
+                <a href="#" class="btn btn-primary mb-2">ユーザー専用ページ</a>
+                <form method="post" action="{% url 'logout' %}" class="d-grid gap-2">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-primary">ログアウト</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-outline-primary mb-2">ログイン</a>
+                <a href="{% url 'register' %}" class="btn btn-outline-secondary mb-2">ユーザー登録</a>
+            {% endif %}
+            <hr>
+            <h6>カード関連</h6>
+            <a href="{% url 'cardgame:deck_list' %}" class="btn btn-outline-primary mb-2">デッキの管理</a>
+            <a href="{% url 'cardgame:lobby' %}" class="btn btn-outline-secondary mb-2">セッションの管理</a>
+        </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="container mt-5 pt-5">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            <!-- カード -->
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">カードゲーム</h5>
+                        <p class="card-text">デッキ管理、セッションの関連機能をここで管理できます。</p>
+                    </div>
+                </div>
+            </div>
+            <!-- デッキ管理カード -->
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">デッキ管理</h5>
+                        <p class="card-text">カードのデッキを作成、編集、削除することができます。</p>
+                        <a href="{% url 'cardgame:deck_list' %}" class="btn btn-primary">デッキ管理</a>
+                    </div>
+                </div>
+            </div>
+            <!-- セッション管理カード -->
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">セッション管理</h5>
+                        <p class="card-text">カードゲームのセッションを作成、参加できます。</p>
+                        <a href="{% url 'cardgame:lobby' %}" class="btn btn-primary">セッション作成・参加</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'teamapp/js/menu.js' %}"></script>
+</body>
+</html>

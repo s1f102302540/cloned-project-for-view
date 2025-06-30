@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'teamapp/css/hit_and_blow/hit_and_blow.css' %}">
+    <script src="{% static 'teamapp/js/hit_and_blow/hit_and_blow.js' %}" defer></script>
+    <title>ヒットアンドブロー - 対戦</title>
+</head>
+<body>
+    <div class="game-container">
+        <h1 class="title">ヒットアンドブロー</h1>
+
+        <!-- 色選択ボタン -->
+        <div id="color-buttons-container">
+            <h3>色を選択してください (4つ)</h3>
+            <div id="color-buttons">
+                <!-- ボタンは JavaScript 側で動的生成 -->
+            </div>
+            <div id="selected-colors">
+                選択した色: <span id="selected-colors-list">色を選択してください</span>
+            </div>
+            <button id="send-btn" disabled>送信</button>
+        </div>
+
+        <!-- チャットボックス -->
+        <div id="chat-box-container">
+            <h2>結果</h2>
+            <div id="chat-box"></div>
+        </div>
+        <a href="{% url 'hit_and_blow_home' %}" class="button">戻る</a>
+    </div>
+</body>
+
+</html>

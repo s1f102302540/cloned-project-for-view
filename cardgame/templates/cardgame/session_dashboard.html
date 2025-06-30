@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Game Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <link rel="stylesheet" href="{% static 'cardgame/css/game_style.css' %}">
+</head>
+<body>
+    <div class="main_content">
+    <h1>Session: {{ session.name }}</h1>
+    <p>Created by: {{ session.created_by.username }}</p>
+    <p>Turn: {{ session.current_turn }}</p>
+
+    <div id="player_info">
+    
+    <h2>Players</h2>
+        {% if deck == None %}
+            <h1>使用するデッキを選択してください！</h1>
+            {%else%}
+            <p>you are {{ current_player.user.username }}</p>
+            {% endif %}
+    <ul>
+        {% for player in players %}
+        <li>{{ player.user.username }} (HP: {{ player.health }}, MP: {{ player.mana }}) 
+            {% if player.user.username == current_player.user.username %}
+            (you)
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    </div>
+    <div id="game-actions">
+        <h2>Game Actions</h2>
+        <p>現在のターン: {{ session.current_turn }}</p>
+
+
+            <div>
+                <h3>Your Hand</h3>
+                {% for card_deck in cards_in_deck %}
+                <li class="disabled card_to_use id_{{card_deck.card.id}}">
+                {{card_deck.card.cost}}:{{ card_deck.card.name }}
+                <button @click="useCard({{ card_deck.card.cost }}, {{ card_deck.card.id }})">
+                    Use Card
+                </button>
+            </li>
+            {% empty %}
+            <p>No cards in this deck.</p>
+            {% endfor %}
+            </div>
+
+    <div id="decks-choice">
+        <h2>Decks Choice</h2>
+        <ul>
+            {% for deck in decks %}
+            <li>
+                {{ deck.name }} : 
+                <a href="{% url 'cardgame:deck_detail' deck.id %}" class="btn btn-secondary btn-sm">デッキを編集</a>
+                <a href="{% url 'cardgame:session_dashboard_choice_deck' session.id deck.id %}" class="btn btn-secondary btn-sm">デッキを選択</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div id="cards-in-deck">
+        <h2>Cards in Deck</h2>
+        <ul>
+            {% for card_deck in cards_in_deck %}
+            <li>
+                {{card_deck.card.cost}}:{{ card_deck.card.name }} x{{ card_deck.quantity }}
+                <button @click="useCard({{ card_deck.card.cost }}, {{ card_deck.card.id }})">
+                    Use Card
+                </button>
+            </li>
+            {% empty %}
+            <p>No cards in this deck.</p>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+</div>
+    <div id="log">
+        <h3>Turn Log</h3>
+        <p>※ターン終了時にリセットされます！</p>
+    </div>
+    
+    <div id="session-id" data-id="{{ session.id }}" deck-id="{{ deck.id }}"></div>
+<!-- プレイヤーの情報をdata属性に埋め込む -->
+    <div id="player-info" 
+     data-username="{{ current_player.user.username }}"
+     data-mana="{{ current_player.mana }}"
+     data-mana-debug="99"
+     lobby-url="{% url 'cardgame:lobby' %}"
+     >
+    </div>
+    <script>
+        var playerInfo = document.getElementById('player-info');
+        console.log(playerInfo.getAttribute('data-mana'))
+        const DeckId = document.getElementById('session-id').getAttribute('deck-id');
+        if (DeckId>0){
+        new Vue({
+            el: '#game-actions',
+            data: {
+                isYourTurn: true,
+                PlayerName: playerInfo.getAttribute('data-username'),
+                session: {},
+                players: [],
+                deck: [],
+                hand: [],
+                card_deck: [],
+                discardPile: [],
+                playerMana: playerInfo.getAttribute('data-mana'),
+                ws: null,
+                lobby_url: playerInfo.getAttribute('lobby-url'),
+            },
+            methods: {
+                connectWebSocket() {
+                    const sessionId = document.getElementById('session-id').getAttribute('data-id');
+                    const DeckId = document.getElementById('session-id').getAttribute('deck-id');
+                    this.ws = new WebSocket(`ws://${window.location.host}/ws/cardgame/${sessionId}/${DeckId}/`);
+                    
+                    this.ws.onmessage = (event) => {
+                        const data = JSON.parse(event.data);
+                        console.log(data);
+                        if (data.type === 'session_info') {
+                            this.session = data.session;
+                            this.isYourTurn = data.is_your_turn;
+                            this.deck = data.deck;
+                            this.playerMana = data.player_mana;
+    
+                            // ゲーム開始時の3枚ドロー
+                            if (data.is_your_turn && this.hand.length === 0) {
+                                this.drawMultipleCards(3);
+                            }
+                        } else if (data.type === 'turn_ended') {
+                            this.isYourTurn = data.next_player === this.session.current_user;
+                            if (this.isYourTurn) {
+                                this.playerMana += 1;
+                                this.drawCard();
+                            }
+                        } else if (data.type === 'card_played') {
+                        // card_played メッセージを受け取った時にログに追加
+                        this.addLog(`${data.player_name}が「 ${data.card} 」を使用した！ (残りマナ: ${data.player_mana})`);
+                        this.addLog(`${data.message}`);
+
+                        }
+                        
+                        else if (data.type === 'end_log') {
+                        // card_played メッセージを受け取った時にログに追加
+                        this.addLog(`${data.message}`);
+                        this.addLog("ロビーに移動します...")
+                        setTimeout(() => window.location.href = this.lobby_url, 2500);
+                        }
+
+                        else if (data.type === 'turn_end') {
+                        this.addLog(`${data.message}`);
+                        location.reload();
+                        }
+
+                        else if (data.type === 'message') {
+                        // card_played メッセージを受け取った時にログに追加
+                        this.addLog(`${data.message}`);
+                        }
+                        else {
+                        console.warn("多分これログメッセージ:", data);
+                        };
+                        
+                        
+                    };
+    
+                    this.ws.onclose = () => {
+                        console.warn('WebSocket connection closed');
+                        location.reload();
+                    };
+                },
+                sendAction(action, payload = {}) {
+                    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                        this.ws.send(JSON.stringify({ action, ...payload }));
+                    } else {
+                        console.error('WebSocket is not open');
+                    }
+                },
+                endTurn() {
+                    this.sendAction('end_turn');
+                    this.addLog("Your turn has ended.");
+                },
+                drawCard() {
+                    if (this.deck.length === 0) {
+                        this.deck = [...this.discardPile];
+                        this.discardPile = [];
+                        this.shuffleDeck();
+                        this.addLog("Deck reshuffled.");
+                    }
+                    const card = this.deck.pop();
+                    this.hand.push(card);
+                    this.addLog(`You drew ${card.name}`);
+                },
+                drawMultipleCards(count) {
+                    for (let i = 0; i < count; i++) {
+                        this.drawCard();
+                    }
+                },
+                shuffleDeck() {
+                    for (let i = this.deck.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [this.deck[i], this.deck[j]] = [this.deck[j], this.deck[i]];
+                    }
+                },
+                useCard(card_cost, card_id) {
+                    console.log(this.PlayerName , "tried to use" ,card_id)
+                    if (card_cost > this.playerMana) {
+                        alert("Not enough mana!");
+                        return;
+                    }
+                    this.sendAction('play_card', { card_id: card_id });
+                    this.playerMana -= card_cost;
+                    this.hand = this.hand.filter(c => c.id !== card_id);
+                    console.log(`カード情報を送信しました id:${card_id}`);
+                },
+                addLog(message) {
+                    const logElement = document.getElementById('log');
+                    const logEntry = document.createElement('p');
+                    logEntry.innerHTML = message;
+                    logEntry.classList.add('log-entry'); // アニメーション用のクラスを追加
+                    logElement.appendChild(logEntry);
+                    logElement.scrollTop = logElement.scrollHeight;
+                }
+            },
+            created() {
+                this.connectWebSocket();
+            }
+        });}
+    </script>
+</body>
+</html>

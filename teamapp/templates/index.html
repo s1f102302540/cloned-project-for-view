@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>index</title>
+        <link rel="stylesheet" href="{% static 'teamapp/css/index.css' %}">
+    </head>
+    <body>
+        <h2>どのゲームをプレイしますか？</h2>
+        <a href="{% url 'hit_and_blow_home' %}" class="button">ヒットアンドブロー</a>
+        <a href="{% url 'othello_index' %}" class="button">オセロ</a>
+        <a href="{% url 'sugoroku_index' %}" class="button">すごろく</a>
+        <a href="{% url 'cardgame:index' %}" class="button">カードゲーム</a>
+    </body>
+</html>

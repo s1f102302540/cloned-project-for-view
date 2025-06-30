@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Lobby</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        /* 全体のフォントとレイアウト調整 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* フォームのデザイン */
+        #create-session-form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        #create-session-form label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        #create-session-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        #create-session-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #create-session-form button:hover {
+            background-color: #27ae60;
+        }
+
+        /* セッションリストのデザイン */
+        #session-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        #session-list li {
+            background-color: #ffffff;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #session-list li button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        #session-list li button:hover {
+            background-color: #2980b9;
+        }
+
+        /* エラーメッセージ */
+        #create-session-message {
+            color: #e74c3c;
+            margin-top: 10px;
+        }
+        
+        /* セパレータ */
+        hr {
+            margin-top: 40px;
+            margin-bottom: 40px;
+            border-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Game Lobby</h1>
+
+    <!-- 新しいセッションを作成 -->
+    <div>
+        <h2>新しいセッションを作成</h2>
+        <form id="create-session-form">
+            <label for="session-name">セッション名:</label>
+            <input type="text" id="session-name" name="session_name" required>
+            <button type="submit">作成</button>
+        </form>
+        <p id="create-session-message"></p>
+    </div>
+
+    <hr>
+
+    <!-- アクティブなセッションリスト -->
+    <div>
+        <h2>参加可能なセッション</h2>
+        <ul id="session-list">
+            {% for session in sessions %}
+            <li>
+                <strong>{{ session.name }}</strong> (部屋主: {{ session.created_by.username }})
+                <button onclick="joinSession({{ session.id }})">参加</button>
+            </li>
+            {% empty %}
+            <li>No active sessions available.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script>
+        function reloadPage() {
+        // ここでは5秒ごとにページをリロードする設定
+        setInterval(function() {
+            location.reload();  // ページをリロード
+        }, 5000); 
+        }
+
+        // ページが読み込まれたときにリロード関数を実行
+        window.onload = reloadPage;
+        // 新しいセッションを作成
+        $("#create-session-form").on("submit", function (e) {
+            e.preventDefault();
+            const sessionName = $("#session-name").val();
+            $.ajax({
+                url: "{% url 'cardgame:create_session' %}",
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                },
+                data: { name: sessionName },
+                success: function (data) {
+                    if (data.success) {
+                        $("#create-session-message").text("Session created successfully!");
+                        location.reload();
+                    } else {
+                        $("#create-session-message").text("Failed to create session.");
+                    }
+                },
+                error: function () {
+                    $("#create-session-message").text("Failed to create session.");
+                }
+            });
+        });
+
+        // セッションに参加
+        function joinSession(sessionId) {
+            $.ajax({
+                url: "{% url 'cardgame:join_session' session_id=0 %}".replace("0", sessionId),
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                },
+                success: function (data) {
+                    if (data.success) {
+                        window.location.href = data.redirect_url;
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error: function () {
+                    alert("Failed to join session. Please try again.");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

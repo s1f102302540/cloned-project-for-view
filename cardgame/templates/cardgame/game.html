@@ -1,0 +1,50 @@
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    const app = new Vue({
+        el: '#app',
+        data: {
+            sessionId: 1,  // セッションIDを固定
+            playerId: 1,   // プレイヤーID
+            socket: null,
+            turnData: null,  // ターンの進行データ
+            gameLog: []  // ゲームログの配列
+        },
+        created() {
+            this.initSocket();
+        },
+        methods: {
+            initSocket() {
+                this.socket = new WebSocket('ws://' + window.location.host + '/ws/game/');
+                this.socket.onmessage = this.handleMessage;
+                this.socket.onclose = this.handleDisconnect;
+            },
+            handleMessage(event) {
+                const data = JSON.parse(event.data);
+                if (data.type === 'turn_update') {
+                    this.turnData = data.data;
+                    // ターンの進行データを更新する処理
+                } else if (data.type === 'card_play') {
+                    this.gameLog.push(data.data);  // カードの使用データをログに追加
+                }
+            },
+            handleDisconnect() {
+                console.log('WebSocket connection closed.');
+            },
+            startTurn() {
+                this.socket.send(JSON.stringify({
+                    action: 'start_turn',
+                    playerId: this.playerId
+                }));
+            },
+            playCard(cardId) {
+                this.socket.send(JSON.stringify({
+                    action: 'play_card',
+                    playerId: this.playerId,
+                    cardId: cardId
+                }));
+            }
+        }
+    });
+</script>

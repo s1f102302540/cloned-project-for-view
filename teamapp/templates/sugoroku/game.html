@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>双六ゲーム - プレイ画面</title>
+    <link rel="stylesheet" href="{% static 'teamapp/css/sugoroku/sugoroku.css' %}">
+    <script src="{% static 'teamapp/js/sugoroku/sugoroku.js' %}" defer></script>
+</head>
+<body>
+    <h1>双六ゲーム</h1>
+    <div id="game-board">
+        <!-- 双六の盤面を動的に生成 -->
+    </div>
+    <p>現在のプレイヤー: <span id="current-player"></span></p>
+    <button id="roll-dice">サイコロを振る</button>
+    <p>サイコロの目: <span id="dice-result"></span></p>
+    <script>
+        const roomName = "{{ room_name }}";
+        document.getElementById("current-player").textContent = "{{ user.username }}";
+    </script>
+</body>
+</html>

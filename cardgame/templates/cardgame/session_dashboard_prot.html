@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+</head>
+<body>
+    <div id="session-info" players="{{ players }}" session="{{ session }}" decks="{{ decks }}" deck="{{ deck }}" cards_indeck="{{ cards_in_deck }}" ></div>
+    <h1>Session: {{ session.name }}</h1>
+    <p>Created by: {{ session.created_by.username }}</p>
+    <p>Turn: {{ session.current_turn }}</p>
+
+    <h2>Players</h2>
+    <ul>
+        <p>{{ session.turn_player }}のターンです。</p>
+        {% for player in players %}
+        <li>{{ player.user.username }} (HP: {{ player.health }}, MP: {{ player.mana }})</li>
+        {% endfor %}
+    </ul>
+
+    <div id="game-actions">
+        <h2>Game Actions</h2>
+        <p v-if="!isYourTurn">Waiting for your turn...</p>
+        <div v-else>
+            <button @click="endTurn">End Turn</button>
+            <button @click="useCard">Use Card</button>
+        </div>
+    </div>
+    <div id="decks choice">
+    <h2>deck choice</h2>
+        {% for deck in decks %}
+      <li>
+        <a>{{ deck.name }}</a>
+        <a href="{% url 'cardgame:deck_detail' deck.id %}" class="btn btn-secondary btn-sm">確認</a>
+        <a href="{% url 'cardgame:session_dashboard_choice_deck' session.id deck.id %}" class="btn btn-secondary btn-sm">選択</a>
+      </li>
+    {% endfor %}
+    </div>
+
+    <div id="cards_in_deck">
+        <h2>デッキの中のカード</h2>
+        {% for card_deck in cards_in_deck %}
+      <li>{{ card_deck.card.name }} x{{ card_deck.quantity }}</li>
+    {% empty %}
+      <p>No cards in this deck.</p>
+    {% endfor %}
+    </div>
+
+    <script>
+        new Vue({
+            el: '#game-actions',
+            data: {
+                isYourTurn: false, // プレイヤーのターン情報をサーバーから取得して更新
+            },
+            methods: {
+                endTurn() {
+                    // サーバーにターン終了のリクエストを送信
+                    alert("Turn ended.");
+                },
+                useCard() {
+                    // カード使用処理
+                    alert("Card used.");
+                },
+                
+            },
+            created() {
+                // サーバーから現在の状態を取得し、ターン情報を更新
+            }
+        });
+    </script>
+</body>
+</html>

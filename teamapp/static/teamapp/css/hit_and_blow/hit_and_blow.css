@@ -1,0 +1,263 @@
+/* Base styles */
+body {
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "メイリオ", sans-serif;
+    background: #f5f5f5; /* 一つ目と同じ背景色 */
+    color: #333; /* 一つ目と同じ文字色 */
+    margin: 0;
+    padding: 1rem;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Game container */
+.game-container {
+    background: white; /* 一つ目と同じ白背景 */
+    width: 90%;
+    max-width: 700px;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -4px rgba(0, 0, 0, 0.1); /* 一つ目と同じ影 */
+}
+
+/* Title */
+.title {
+    font-family: "Lobster", "Hiragino Sans", sans-serif;
+    font-size: 2.5rem;
+    color: #2c3e50; /* 一つ目と同じ色 */
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Username section */
+#username-container {
+    background: #f5f5f5; /* 一つ目と同じ薄いグレー */
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+#username-input {
+    padding: 0.7rem 1rem;
+    border: 2px solid #2c3e50; /* 一つ目と調和する濃い色 */
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 200px;
+    background: white; /* 白背景 */
+}
+
+#username-input:focus {
+    outline: none;
+    border-color: #2c3e50; /* フォーカス時も同じ色 */
+    box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.2);
+}
+
+#set-username-btn,
+#edit-username-btn,
+#send-btn,
+.button {
+    background: #2c3e50; /* 一つ目のボタン色 */
+    color: white;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 8px; /* 一つ目の角丸に合わせる */
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 1px 2px -1px rgba(0, 0, 0, 0.1); /* 一つ目の影 */
+    transition: all 0.3s ease;
+}
+
+#set-username-btn:hover,
+#edit-username-btn:hover,
+#send-btn:hover,
+.button:hover {
+    background: #34495e; /* 一つ目のホバー時の色 */
+    transform: translateY(-3px); /* 浮き上がる効果 */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+#set-username-btn:active,
+#edit-username-btn:active,
+#send-btn:active,
+.button:active {
+    transform: translateY(1px); /* 押し込む効果 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background: #2c3e50; /* 押下時の色 */
+}
+
+#send-btn:disabled {
+    background: #b0bec5; /* 無効時は薄いグレー */
+    cursor: not-allowed;
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+.button:hover:not(:disabled) {
+    background: #34495e;
+}
+
+/* Score display */
+#score-display {
+    background: #f5f5f5; /* 一つ目の薄いグレー */
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 1rem 0;
+}
+
+/* Color selection area */
+#color-buttons-container {
+    background: #f5f5f5; /* 一つ目の薄いグレー */
+    padding: 1.6rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+}
+
+#color-buttons-container h3 {
+    color: #2c3e50; /* 一つ目と同じ濃い色 */
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* Color buttons */
+#color-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 20px;
+    padding: 0.5rem;
+}
+
+.color-button {
+    height: 50px;
+    border: 2px solid #2c3e50; /* ボタンの境界色を一つ目と同じに */
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+    background: white; /* 白背景 */
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.color-button-black { /* 黒 */
+    color: white;
+    background: #2c3e50; /* 一つ目の黒に近い色 */
+}
+
+.color-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    border-color: #34495e; /* ホバー時の境界色 */
+}
+
+/* Selected colors display */
+#selected-colors {
+    background: #f5f5f5; /* 一つ目の薄いグレー */
+    border: 2px solid #2c3e50; /* 境界線は濃い色 */
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+#selected-colors-list {
+    color: #333; /* 一つ目の文字色 */
+    font-weight: 500;
+}
+
+/* Send button */
+#send-btn {
+    background: #2c3e50; /* 一つ目のボタン色 */
+    color: white;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: block;
+    margin: 1.5rem auto;
+    min-width: 200px;
+}
+
+#send-btn:disabled {
+    background: #b0bec5;
+    cursor: not-allowed;
+}
+
+#send-btn:hover:not(:disabled) {
+    background: #34495e;
+}
+
+/* Chat box */
+#chat-box-container {
+    background: #f5f5f5;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+}
+
+#chat-box-container h2 {
+    color: #2c3e50;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+#chat-box {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 0.5rem;
+}
+
+#chat-box div {
+    background: white;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border-radius: 6px;
+    border: 1px solid #cbd5e0;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    .game-container {
+        padding: 1.5rem;
+        width: 95%;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    #color-buttons {
+        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    }
+
+    .color-button {
+        height: 45px;
+        font-size: 0.8rem;
+    }
+
+    #username-input {
+        width: 160px;
+    }
+
+}
+
+
+@media (max-width: 780px) {
+    #set-username-btn,
+    #edit-username-btn,
+    #send-btn {
+        padding: 0.5rem 1.5rem;
+        margin-top: 15px;
+    }
+}

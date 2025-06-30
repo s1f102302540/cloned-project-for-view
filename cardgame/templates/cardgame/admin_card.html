@@ -1,0 +1,74 @@
+{% load static %}
+{% block content %}
+    <h1>カード管理</h1>
+
+    <!-- カード作成フォーム -->
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            <label for="name">カード名:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="cost">コスト:</label>
+            <input type="number" id="cost" name="cost" required>
+        </div>
+
+        <div id="effects-container">
+            <!-- 新しいエフェクトを追加するためのフォーム -->
+            <div class="effect-group">
+                <label for="effect_type_0">効果タイプ:</label>
+                <select id="effect_type_0" name="effect_type">
+                    <option value="damage">ダメージ</option>
+                    <option value="heal">回復</option>
+                    <option value="modify_value">値変更</option>
+                </select>
+                <label for="target_type_0">ターゲットタイプ:</label>
+                <select id="target_type_0" name="target_type">
+                    <option value="1">対戦相手</option>
+                    <option value="2">自分</option>
+                    <option value="3">すべて</option>
+                </select>
+                <label for="var_0">効果量:</label>
+                <input type="number" id="var_0" name="var" required>
+                <button type="button" onclick="removeEffect(this)">削除</button>
+            </div>
+        </div>
+
+        <button type="button" onclick="addEffect()">追加効果を追加</button>
+        <button type="submit">カードを作成</button>
+    </form>
+
+    <h2>カード一覧</h2>
+<table>
+    <tr>
+        <th>カード名</th>
+        <th>コスト</th>
+        <th>エフェクト</th>
+        <th>操作</th>
+    </tr>
+    {% for card in cards %}
+    <tr>
+        <td>{{ card.name }}</td>
+        <td>{{ card.cost }}</td>
+        <td>
+            <ul>
+                {% for effect in card.effects.all %}
+                <li>
+                    効果: {{ effect.effect_type }}<br>
+                    ターゲット: {{ effect.target_type }}<br>
+                    効果量: {{ effect.var }}
+                </li>
+                {% endfor %}
+            </ul>
+        </td>
+        <td>
+            <a href="{% url 'cardgame:edit_card' card.id %}">編集</a>
+            <a href="{% url 'cardgame:delete_card' card.id %}" onclick="return confirm('本当に削除してよろしいですか？')">削除</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+    <script src="{% static 'cardgame/js/admin_card.js' %}"></script>
+
+{% endblock %}

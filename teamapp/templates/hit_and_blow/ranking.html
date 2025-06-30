@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'teamapp/css/hit_and_blow/ranking.css' %}">
+    <script src="{% static 'teamapp/js/hit_and_blow/ranking.js' %}" defer></script>
+    <title>ランキング</title>
+</head>
+<body>
+    <div class="main-container">
+        <h1>ランキング</h1>
+        <!-- ランキングリスト (初期表示) -->
+        <ol id="ranking-list">
+            {% for player in top_players %}
+            {% if forloop.counter == 1 %}
+                <li>{{ player.username }} さん - ポイント: {{ player.points }}</li>
+            {% else %}
+                <li>{{ player.username }} さん - ポイント: {{ player.points }}</li>
+            {% endif %}
+            {% endfor %}
+        </ol>
+
+        <!-- ランキングを更新するボタン -->
+        <button id="refresh-ranking" class="button refresh-button">ランキングを更新</button>
+
+        <!-- 戻るボタン -->
+        <a href="{% url 'hit_and_blow_home' %}" class="button back-button">戻る</a>
+
+    </div>
+</body>
+</html>

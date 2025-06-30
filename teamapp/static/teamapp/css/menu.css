@@ -1,0 +1,32 @@
+/* スクロール対応ナビゲーションバー */
+body {
+    padding-top: 56px; /* ナビゲーションバーの高さ分 */
+}
+
+/* サイドメニューのカスタマイズ */
+.offcanvas {
+    background-color: #f8f9fa;
+}
+
+.offcanvas .btn-close {
+    color: #000;
+}
+
+/* レスポンシブなカード配置 */
+.card {
+    height: 100%;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.offcanvas-header {
+    background-color: gray;
+}
+
+#sideMenu {
+    border-radius: 20px;
+}

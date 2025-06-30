@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'teamapp/css/hit_and_blow/home.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <title>Hit and Blow</title>
+</head>
+<body>
+    <div class="main-container">
+        <h1 class="title">ヒットアンドブロー</h1>
+        <div class="buttons">
+            <a href="{% url 'hit_and_blow_game' %}" class="button">対戦</a>
+            <a href="{% url 'hit_and_blow_ranking' %}" class="button">ランキング</a>
+            <a href="{% url 'index' %}" class="button" id="re">メインページへ</a>
+        </div>
+    </div>
+</body>
+</html>

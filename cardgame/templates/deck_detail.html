@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ deck.name }}</h2>
+  <ul>
+    {% for card_deck in cards_in_deck %}
+      <li>{{ card_deck.card.name }} x{{ card_deck.quantity }}</li>
+    {% empty %}
+      <p>No cards in this deck.</p>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'cardgame:deck_edit' deck.id %}" class="btn btn-secondary">Rename Deck</a>
+
+  <form method="post" action="{% url 'cardgame:add_card_to_deck' deck.id %}">
+    {% csrf_token %}
+    <label for="card_id">カードを選択:</label>
+    <select name="card_id" id="card_id">
+        {% for card in available_cards %}
+            <option value="{{ card.id }}">{{ card.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">追加</button>
+    </form>
+    
+    <form method="post" action="{% url 'cardgame:delete_deck' deck.id %}">
+    {% csrf_token %}
+    <button type="submit" onclick="return confirm('本当に削除しますか？')">デッキを削除</button>
+    </form>
+    <h2>利用可能カード一覧</h2>
+    {% for card in available_cards %}
+    <tr>
+        <td>名前:{{ card.name }}</td>
+        <td>コスト:{{ card.cost }}</td>
+        <td>
+            <ul>
+                {% for effect in card.effects.all %}
+                    <li>
+                    効果: {% if effect.effect_type == "damage" %}
+                    ダメージ
+                    {% elif effect.effect_type == "heal" %}
+                    回復
+                    {% elif effect.effect_type == "modify" %}
+                    値変更
+                    {% else %}
+                    不明
+                    {% endif %}<br>
+                    ターゲット: {% if effect.target_type == 1 %}
+                    相手
+                {% elif effect.target_type == 2 %}
+                    自分
+                {% elif effect.target_type == 3 %}
+                    全体
+                {% else %}
+                    不明
+                {% endif %}<br>
+                    効果量: {{ effect.var }}
+                </li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    {% endfor %}
+
+{% endblock %}

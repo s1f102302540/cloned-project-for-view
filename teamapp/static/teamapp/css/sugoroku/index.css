@@ -1,0 +1,57 @@
+/* ベーススタイル */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 40px;
+    color: #333;
+}
+
+/* ボタンのスタイル */
+.button {
+    display: inline-block;
+    text-decoration: none;
+    padding: 15px 30px;
+    margin: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.button:active {
+    background-color: #003f7f;
+    transform: scale(0.98);
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 28px;
+    }
+    .button {
+        font-size: 16px;
+        padding: 12px 25px;
+    }
+}

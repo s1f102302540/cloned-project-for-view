@@ -1,0 +1,30 @@
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+<script>
+    const app = new Vue({
+        el: '#app',
+        data: {
+            socket: null,
+            gameLog: []  // ゲームログの配列
+        },
+        created() {
+            this.initSocket();
+        },
+        methods: {
+            initSocket() {
+                this.socket = new WebSocket('ws://' + window.location.host + '/ws/game/');
+                this.socket.onmessage = this.handleMessage;
+                this.socket.onclose = this.handleDisconnect;
+            },
+            handleMessage(event) {
+                const data = JSON.parse(event.data);
+                if (data.type === 'turn_update') {
+                    this.gameLog.push(data.data);  // ログを観戦プレイヤーに表示
+                }
+            },
+            handleDisconnect() {
+                console.log('WebSocket connection closed.');
+            }
+        }
+    });
+</script>

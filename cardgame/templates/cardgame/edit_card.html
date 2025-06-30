@@ -1,0 +1,41 @@
+
+{% block content %}
+    <h1>カードの編集: {{ card.name }}</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            <label for="name">カード名:</label>
+            <input type="text" id="name" name="name" value="{{ card.name }}" required>
+        </div>
+        <div>
+            <label for="cost">コスト:</label>
+            <input type="number" id="cost" name="cost" value="{{ card.cost }}" required>
+        </div>
+
+        <div id="effects-container">
+            {% for effect in card.effects.all %}
+            <div class="effect-group">
+                <label for="effect_type_{{ forloop.counter }}">効果タイプ:</label>
+                <select id="effect_type_{{ forloop.counter }}" name="effect_type_{{ forloop.counter }}" class="effect-type-selector">
+                    <option value="damage" {% if effect.effect_type == 'damage' %}selected{% endif %}>ダメージ</option>
+                    <option value="heal" {% if effect.effect_type == 'heal' %}selected{% endif %}>回復</option>
+                    <option value="modify_value" {% if effect.effect_type == 'modify_value' %}selected{% endif %}>値変更</option>
+                </select>
+                <label for="target_type_{{ forloop.counter }}">ターゲットタイプ:</label>
+                <select id="target_type_{{ forloop.counter }}" name="target_type_{{ forloop.counter }}">
+                    <option value="1" {% if effect.target_type == 1 %}selected{% endif %}>対戦相手</option>
+                    <option value="2" {% if effect.target_type == 2 %}selected{% endif %}>自分</option>
+                    <option value="3" {% if effect.target_type == 3 %}selected{% endif %}>すべて</option>
+                </select>
+                <label for="var_{{ forloop.counter }}">効果量:</label>
+                <input type="number" id="var_{{ forloop.counter }}" name="var_{{ forloop.counter }}" value="{{ effect.var }}" required>
+                <button type="button" onclick="removeEffect(this)">削除</button>
+            </div>
+            {% endfor %}
+        </div>
+
+        <button type="button" onclick="addEffect()">追加効果を追加</button>
+        <button type="submit">保存</button>
+    </form>
+{% endblock %}

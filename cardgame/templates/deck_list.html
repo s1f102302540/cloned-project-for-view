@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Your Decks</h2>
+  <a href="{% url 'cardgame:deck_create' %}" class="btn btn-primary">Create New Deck</a>
+  <ul>
+    {% for deck in decks %}
+      <li>
+        <a href="{% url 'cardgame:deck_detail' deck.id %}">{{ deck.name }}</a>
+        <a href="{% url 'cardgame:deck_edit' deck.id %}" class="btn btn-secondary btn-sm">Edit</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

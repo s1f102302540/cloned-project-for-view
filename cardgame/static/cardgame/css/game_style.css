@@ -1,0 +1,220 @@
+/* General Page Layout */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #162936; /* ベースカラー */
+    color: #eaeaea; /* 明るい文字色に変更 */
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* ビューポート全体の高さを使用 */
+}
+
+/* Header and General Layout */
+h1, h2, h3 {
+    color: #27e9b5; /* アクセントカラー */
+}
+
+h1 {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#game-actions {
+    margin: 20px auto;
+    padding: 20px;
+    width: 80%;
+    background-color: #3b5265; /* サブカラー */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#game-actions button {
+    background-color: #27e9b5; /* アクセントカラー */
+    color: #162936; /* ベースカラー */
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#game-actions button:hover {
+    background-color: #051824; /* マイナーカラー */
+}
+
+/* Log Section - Fixed at the top */
+#log {
+    width: 100%;
+    height: 150px;
+    background-color: #3b5265; /* サブカラー */
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* 最前面に表示 */
+    overflow-y: auto;
+    color: #eaeaea; /* 明るい文字色に変更 */
+}
+
+/* Player Info */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    padding: 5px 0;
+    font-size: 16px;
+    color: #eaeaea; /* 明るい文字色に変更 */
+}
+
+ul li a {
+    text-decoration: none;
+    color: #27e9b5; /* アクセントカラー */
+}
+
+ul li a:hover {
+    text-decoration: underline;
+}
+
+#players {
+    margin-top: 20px;
+    background-color: #3b5265; /* サブカラー */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Cards */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.card {
+    width: 120px;
+    height: 180px;
+    background-color: #162936; /* ベースカラー */
+    border-radius: 8px;
+    border: 1px solid #3b5265; /* サブカラー */
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.card h4 {
+    font-size: 18px;
+    color: #27e9b5; /* アクセントカラー */
+}
+
+.card p {
+    font-size: 14px;
+    color: #eaeaea; /* 明るい文字色に変更 */
+}
+
+/* Decks and Cards Choice */
+#decks-choice, #cards-in-deck {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #3b5265; /* サブカラー */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#decks-choice ul, #cards-in-deck ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+#decks-choice li, #cards-in-deck li {
+    margin-bottom: 10px;
+}
+
+#decks-choice li a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #27e9b5; /* アクセントカラー */
+}
+
+#decks-choice li a:hover {
+    text-decoration: underline;
+}
+
+#cards-in-deck button {
+    background-color: #27e9b5; /* アクセントカラー */
+    color: #162936; /* ベースカラー */
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#cards-in-deck button:hover {
+    background-color: #051824; /* マイナーカラー */
+}
+
+/* Miscellaneous */
+#game-actions p {
+    font-size: 16px;
+    color: #051824;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: #e74c3c;
+}
+
+/* Main content adjusted for log space */
+.main-content {
+    padding-top: 200px; /* ログ部分を避けるため、上に余白を作る */
+    margin: 0 auto;
+    width: 80%;
+    flex-grow: 1; /* 残りの部分を自動的に埋める */
+    overflow-y: auto;
+}
+
+@keyframes slideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.log-entry {
+    animation: slideUp 0.3s ease-out;
+    margin: 5px 0;
+}
+
+#player_info{
+    text-align: center;
+}
+
+
+.disabled {
+    display: none !important;
+}

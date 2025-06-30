@@ -1,0 +1,28 @@
+<!-- cardgame/templates/cardgame/decks/view_create.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Decks</title>
+</head>
+<body>
+    <h1>Your Decks</h1>
+
+    <ul>
+        {% for deck in decks %}
+            <li><a href="{% url 'cardgame:deck_detail' deck.id %}">{{ deck.name }}</a></li>
+        {% empty %}
+            <li>No decks found.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Create a New Deck</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Deck</button>
+    </form>
+</body>
+</html>

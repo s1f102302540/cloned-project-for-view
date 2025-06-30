@@ -1,0 +1,273 @@
+/* 基本のレイアウト */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #162936; /* ベースカラー */
+    color: #fff;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+/* コンテンツ部分 */
+.content {
+    z-index: 2;
+    text-align: center;
+}
+
+h1 {
+    color: #27e9b5; /* アクセントカラー */
+    font-size: 36px;
+    margin: 0;
+}
+
+p {
+    color: #3b5265; /* サブカラー */
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+/* ログ部分 */
+#log {
+    width: 100%;
+    height: 150px;
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* 最前面に表示 */
+    overflow-y: auto;
+    color: #34495e;
+}
+
+/* プレイヤー情報 */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    padding: 5px 0;
+    font-size: 16px;
+    color: #34495e;
+}
+
+ul li a {
+    text-decoration: none;
+    color: #3498db;
+}
+
+ul li a:hover {
+    text-decoration: underline;
+}
+
+#players {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ゲームアクション */
+#game-actions {
+    margin: 20px auto;
+    padding: 20px;
+    width: 80%;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#game-actions button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#game-actions button:hover {
+    background-color: #2980b9;
+}
+
+/* カード */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.card {
+    width: 120px;
+    height: 180px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.card h4 {
+    font-size: 18px;
+    color: #2c3e50;
+}
+
+.card p {
+    font-size: 14px;
+    color: #7f8c8d;
+}
+
+/* デッキとカード選択 */
+#decks-choice, #cards-in-deck {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#decks-choice ul, #cards-in-deck ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+#decks-choice li, #cards-in-deck li {
+    margin-bottom: 10px;
+}
+
+#decks-choice li a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #3498db;
+}
+
+#decks-choice li a:hover {
+    text-decoration: underline;
+}
+
+#cards-in-deck button {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#cards-in-deck button:hover {
+    background-color: #27ae60;
+}
+
+/* ゲームアクションのメッセージ */
+#game-actions p {
+    font-size: 16px;
+    color: #e67e22;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: #e74c3c;
+}
+
+/* メインコンテンツ */
+.main-content {
+    padding-top: 200px; /* ログ部分を避けるため、上に余白を作る */
+    margin: 0 auto;
+    width: 80%;
+    flex-grow: 1; /* 残りの部分を自動的に埋める */
+    overflow-y: auto;
+}
+
+@keyframes slideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.log-entry {
+    animation: slideUp 0.3s ease-out;
+    margin: 5px 0;
+}
+
+/* 遺伝子回転アニメーション */
+.dna-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    animation: rotateDNA 20s linear infinite;
+}
+
+/* DNAのらせん構造 */
+.dna-helix {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border: 2px solid #27e9b5; /* アクセントカラー */
+    border-radius: 50%;
+    background: radial-gradient(circle, #3b5265, #051824); /* サブカラーとマイナーカラー */
+    box-shadow: 0 0 20px rgba(39, 233, 181, 0.5);
+    animation: helixRotate 4s ease-in-out infinite;
+}
+
+/* 回転のアニメーション */
+@keyframes rotateDNA {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes helixRotate {
+    0% {
+        transform: rotateX(0deg) rotateY(0deg);
+    }
+    50% {
+        transform: rotateX(360deg) rotateY(180deg);
+    }
+    100% {
+        transform: rotateX(0deg) rotateY(360deg);
+    }
+}
+
+

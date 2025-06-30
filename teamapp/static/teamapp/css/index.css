@@ -1,0 +1,115 @@
+/* 全体のスタイリング */
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+  background: #f0f2f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* タイトルのスタイリング */
+h2 {
+  color: #1a1a1a;
+  margin-bottom: 50px;
+  font-size: 32px;
+  font-weight: bold;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+h2:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: #2980b9;
+  border-radius: 2px;
+}
+
+/* ボタンの基本スタイル */
+.button {
+  display: inline-block;
+  width: 280px;
+  padding: 18px 30px;
+  margin: 12px;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 各ゲームボタンの個別カラー */
+/* ヒットアンドブロー */
+a[href*='hit_and_blow'] {
+  background-color: #e74c3c;
+}
+a[href*='hit_and_blow']:hover {
+  background-color: #c0392b;
+}
+
+/* オセロ */
+a[href*='othello'] {
+  background-color: #27ae60;
+}
+a[href*='othello']:hover {
+  background-color: #219a52;
+}
+
+/* すごろく */
+a[href*='sugoroku'] {
+  background-color: #2980b9;
+}
+a[href*='sugoroku']:hover {
+  background-color: #226a9c;
+}
+
+/* カードゲーム */
+a[href*='cardgame'] {
+  background-color: #9b59b6;
+}
+a[href*='cardgame']:hover {
+  background-color: #8e44ad;
+}
+
+/* ホバー時の共通エフェクト */
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* アクティブ時の共通エフェクト */
+.button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 480px) {
+  body {
+      padding: 20px 10px;
+  }
+  
+  h2 {
+      font-size: 24px;
+      margin-bottom: 30px;
+  }
+  
+  .button {
+      width: 240px;
+      padding: 15px 25px;
+      font-size: 16px;
+  }
+}
